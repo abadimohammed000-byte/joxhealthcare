@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Abstract — Start</title>
+<style>
+:root{color-scheme:dark;--bg:#070707;--panel:#101010;--line:#282828;--muted:#858585;--white:#f4f4f4}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}
+button{color:inherit;cursor:pointer}
+.shell{height:100dvh;width:100vw;background:radial-gradient(ellipse at 18% 32%,#171717 0,transparent 38%),radial-gradient(ellipse at 72% 12%,#111 0,transparent 34%),#070707;position:relative;overflow:hidden}
+.ambient{position:absolute;inset:-20%;pointer-events:none;opacity:.22;background:linear-gradient(125deg,transparent 35%,#333 36%,transparent 37%),radial-gradient(ellipse at 24% 63%,#555 0,transparent 19%);filter:blur(32px)}
+.sidebar{position:absolute;z-index:5;left:0;top:0;bottom:0;width:54px;border-right:1px solid #222;background:#080808d9;display:flex;flex-direction:column;align-items:center;padding:9px 0;gap:7px}
+.sidebtn{width:36px;height:36px;border:1px solid transparent;background:transparent;border-radius:10px;display:grid;place-items:center;color:#858585;transition:.15s}
+.sidebtn:hover,.sidebtn.active{color:#fff;background:#f4f4f4;border-color:#fff;color:#080808}
+.sidebtn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.side-spacer{flex:1}
+.top{position:absolute;left:54px;right:0;top:0;height:82px;display:flex;align-items:center;gap:16px;padding:0 22px;z-index:4}
+.navcontrols{display:flex;gap:12px;color:#7b7b7b}
+.navcontrols button,.top-action{border:0;background:transparent;color:#888;padding:5px}
+.address{margin:auto;width:min(600px,58vw);height:34px;border:1px solid #242424;background:#101010bd;border-radius:9px;display:flex;align-items:center;gap:10px;padding:0 12px;color:#666}
+.address svg{width:14px;height:14px;flex:none}
+.address input{width:100%;border:0;outline:0;background:transparent;color:#ddd;font-size:12px;letter-spacing:.2px}
+.address input::placeholder{color:#555}
+.top-right{display:flex;gap:12px;margin-left:auto}
+.main{position:absolute;inset:82px 0 36px 54px;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1}
+.home{width:min(620px,100%);transform:translateY(-2px);text-align:center}
+.wordmark{font-size:clamp(35px,4vw,56px);font-weight:650;letter-spacing:2px;margin:0 0 24px;line-height:1.1;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:9px}
+.searchbox{height:94px;border:1px solid #292929;background:#101010b8;border-radius:23px;padding:14px 16px 11px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;box-shadow:0 12px 55px #0005}
+.searchrow{display:flex;align-items:center;gap:12px}
+.searchrow svg{width:17px;height:17px;color:#cfcfcf;flex:none}
+.searchrow input{border:0;outline:0;background:transparent;color:#eee;width:100%;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px}
+.searchrow input::placeholder{color:#777}
+.searchbottom{display:flex;justify-content:space-between;align-items:center;color:#777;font-size:10px}
+.go{border:1px solid #2a2a2a;border-radius:999px;padding:7px 13px;background:#111;color:#bbb;font-size:11px}
+.quicklinks{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.quick{width:47px;height:47px;border:1px solid #292929;border-radius:15px;background:#111b;display:grid;place-items:center;transition:.15s}
+.quick:hover{background:#242424;transform:translateY(-2px);border-color:#444}
+.quick svg{width:18px;height:18px;fill:none;stroke:#eee;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hint{margin-top:18px;color:#545454;font-size:11px}
+.footer{position:absolute;bottom:13px;left:54px;right:0;text-align:center;font-size:10px;color:#666;z-index:2}
+.footer a{color:#777;text-decoration:none}.footer span{margin:0 8px}
+.view{position:absolute;inset:0 0 0 54px;z-index:8;background:#080808;display:none;flex-direction:column}
+.view.visible{display:flex}
+.viewbar{height:58px;flex:none;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 18px;gap:12px}
+.viewtitle{font-size:13px;color:#ddd;font-weight:600;letter-spacing:.3px}
+.viewhint{font-size:11px;color:#666;margin-left:auto}
+.closebtn{border:1px solid #2a2a2a;background:#111;border-radius:9px;padding:8px 12px;font-size:12px}
+.dashboard-content{overflow:auto;padding:clamp(20px,5vw,58px);width:100%;max-width:1250px;margin:0 auto}
+.eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#777;margin:0 0 12px}
+.dashhead{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:30px}
+.dashhead h1{font-size:clamp(28px,4vw,45px);letter-spacing:-1.7px;margin:0;font-weight:560}
+.dashhead p{color:#777;font-size:13px;margin:10px 0 0}
+.clock{font-variant-numeric:tabular-nums;font-size:15px;color:#bbb;white-space:nowrap}
+.sectionlabel{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:1.5px;margin:28px 0 12px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gamecard{border:1px solid #282828;background:linear-gradient(145deg,#141414,#0b0b0b);border-radius:16px;min-height:135px;padding:16px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;transition:.15s}
+.gamecard:hover{border-color:#555;transform:translateY(-2px);background:#171717}
+.gameicon{width:36px;height:36px;border:1px solid #303030;background:#1b1b1b;border-radius:11px;display:grid;place-items:center;font-size:17px;margin-bottom:auto}
+.gamecard strong{font-size:13px;font-weight:550;margin-top:20px}
+.gamecard small{font-size:10px;color:#777;margin-top:5px}
+.toolrow{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+.toolcard{border:1px solid #292929;background:#0e0e0e;border-radius:16px;padding:18px;min-height:112px}
+.toolcard h3{font-size:13px;font-weight:550;margin:0 0 8px}
+.toolcard p{font-size:11px;color:#777;line-height:1.6;margin:0 0 12px}
+.inlineform{display:flex;gap:8px}
+.inlineform input{min-width:0;flex:1;background:#080808;border:1px solid #292929;border-radius:9px;padding:10px;color:#eee;outline:0;font-size:12px}
+.action{background:#f1f1f1;color:#080808;border:0;border-radius:9px;padding:9px 13px;font-size:11px;font-weight:650}
+.notes{width:100%;height:76px;resize:vertical;background:#080808;border:1px solid #292929;border-radius:9px;padding:10px;color:#ddd;font-size:12px;outline:0}
+.browser-frame{display:none;position:absolute;inset:82px 0 0 54px;z-index:3;background:#fff}
+.browser-frame.visible{display:block}
+.browser-frame iframe{width:100%;height:100%;border:0;background:#fff}
+.toast{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:20;background:#171717;border:1px solid #333;color:#ddd;border-radius:10px;padding:10px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:min(90vw,560px);text-align:center}
+.toast.show{opacity:1}
+.hidden{display:none!important}
+@media(max-width:760px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.toolrow{grid-template-columns:1fr}.top{padding:0 10px}.navcontrols{display:none}.address{width:min(75vw,600px)}.top-right{display:none}.dashhead{align-items:flex-start;flex-direction:column}.viewhint{display:none}.main{padding:16px}.wordmark{margin-bottom:22px}}
+@media(max-width:420px){.sidebar{width:46px}.top{left:46px}.main{left:46px}.footer{left:46px}.view{left:46px}.browser-frame{left:46px}.cards{gap:8px}.gamecard{padding:12px;min-height:120px}}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+<div class="ambient"></div>
+<aside class="sidebar" aria-label="Navigation">
+<button class="sidebtn active" data-view="home" title="Home" aria-label="Home"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg></button>
+<button class="sidebtn" data-view="dashboard" title="Games" aria-label="Games"><svg viewBox="0 0 24 24"><path d="M6 4h12l3 15H3L6 4Z"/><path d="M8 9h8M12 7v4"/></svg></button>
+<button class="sidebtn" data-view="dashboard" title="Game menu" aria-label="Game menu"><svg viewBox="0 0 24 24"><path d="M6 9h12a4 4 0 0 1 3.7 5.5l-1 2.4a2 2 0 0 1-3.3.6l-2.2-2.3H10l-2.2 2.3a2 2 0 0 1-3.3-.6l-1-2.4A4 4 0 0 1 6 9Z"/><path d="M7 12v4M5 14h4M16 13h.01M18 15h.01"/></svg></button>
+<button class="sidebtn" data-view="dashboard" title="Music" aria-label="Music"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>
+<button class="sidebtn" data-view="dashboard" title="Tools" aria-label="Tools"><svg viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 16 .8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z"/></svg></button>
+<button class="sidebtn" data-view="dashboard" title="Notes" aria-label="Notes"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></button>
+<div class="side-spacer"></div>
+<button class="sidebtn" data-view="dashboard" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.5-2.6 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.5-2.6 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h3l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.5 2.6-1.4 1.1a7 7 0 0 1 0 2Z"/></svg></button>
+</aside>
+<header class="top">
+<div class="navcontrols"><button id="back" aria-label="Back">‹</button><button id="forward" aria-label="Forward">›</button><button id="reload" aria-label="Reload">↻</button></div>
+<form class="address" id="addressForm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="addressInput" placeholder="Search or enter address" autocomplete="off" aria-label="Search or enter address"></form>
+<div class="top-right"><button class="top-action" id="newTab" title="New tab">＋</button></div>
+</header>
+<main class="main" id="homeView">
+<div class="home">
+<h1 class="wordmark">Abstract.</h1>
+<form class="searchbox" id="searchForm">
+<div class="searchrow"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg><input id="searchInput" placeholder="search or enter a URL" autocomplete="off" aria-label="Search or enter a URL"></div>
+<div class="searchbottom"><span>Search or enter a URL</span><button class="go" type="submit">Go ↗</button></div>
+</form>
+<div class="quicklinks">
+<button class="quick" data-url="https://www.coolmathgames.com/" aria-label="Games" title="Games"><svg viewBox="0 0 24 24"><path d="M6 8h12a4 4 0 0 1 3.7 5.5l-1 2.4a2 2 0 0 1-3.3.6l-2.2-2.3H10l-2.2 2.3a2 2 0 0 1-3.3-.6l-1-2.4A4 4 0 0 1 6 8Z"/><path d="M7 10v4M5 12h4M16 11h.01M18 13h.01"/></svg></button>
+<button class="quick" data-url="https://music.youtube.com/" aria-label="Music" title="Music"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>
+<button class="quick" data-url="https://www.youtube.com/" aria-label="Video" title="Video"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="m10 10 5 3-5 3zM3 10h18M7 6l2-3M13 6l2-3"/></svg></button>
+<button class="quick" data-view="dashboard" aria-label="Tools" title="Tools"><svg viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg></button>
+<button class="quick" data-view="dashboard" aria-label="Notes" title="Notes"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9"/></svg></button>
+<button class="quick" data-view="dashboard" aria-label="Dashboard" title="Dashboard"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1.4-2 6.6-2 8 0M9 9h.01M15 9h.01"/></svg></button>
+</div>
+<div class="hint">Press <kbd>Ctrl</kbd> + <kbd>E</kbd> to open the dashboard</div>
+</div>
+</main>
+<div class="browser-frame" id="browserFrame"><iframe id="browser" title="Website preview" referrerpolicy="no-referrer"></iframe></div>
+<section class="view" id="dashboardView" aria-label="Dashboard">
+<div class="viewbar"><span class="viewtitle">ABSTRACT / DASHBOARD</span><span class="viewhint">Press Ctrl + E to return</span><button class="closebtn" id="closeDashboard">Close ✕</button></div>
+<div class="dashboard-content">
+<div class="dashhead"><div><div class="eyebrow">Your space</div><h1>Play something.</h1><p>A clean collection of shortcuts and little tools.</p></div><div class="clock" id="clock">--:--:--</div></div>
+<div class="sectionlabel">Quick launch</div>
+<div class="cards">
+<button class="gamecard" data-url="https://www.coolmathgames.com/"><span class="gameicon">⌘</span><strong>Coolmath Games</strong><small>Browser games</small></button>
+<button class="gamecard" data-url="https://poki.com/"><span class="gameicon">◈</span><strong>Poki</strong><small>Quick games</small></button>
+<button class="gamecard" data-url="https://itch.io/games/html5"><span class="gameicon">▣</span><strong>itch.io HTML5</strong><small>Indie web games</small></button>
+<button class="gamecard" data-url="https://www.chess.com/"><span class="gameicon">♞</span><strong>Chess.com</strong><small>Chess</small></button>
+<button class="gamecard" data-url="https://music.youtube.com/"><span class="gameicon">♫</span><strong>Music</strong><small>Listen to music</small></button>
+<button class="gamecard" data-url="https://www.youtube.com/"><span class="gameicon">▷</span><strong>YouTube</strong><small>Video</small></button>
+<button class="gamecard" data-url="https://neal.fun/"><span class="gameicon">✳</span><strong>Neal.fun</strong><small>Interactive experiments</small></button>
+<button class="gamecard" data-url="https://archive.org/details/softwarelibrary_msdos_games"><span class="gameicon">▤</span><strong>Classic games</strong><small>Internet Archive</small></button>
+</div>
+<div class="sectionlabel">Little tools</div>
+<div class="toolrow">
+<div class="toolcard"><h3>Open a website</h3><p>Try loading a URL in the preview area. If the site blocks embedding, use the open-in-new-tab option.</p><form class="inlineform" id="dashUrlForm"><input id="dashUrl" placeholder="https://example.com" aria-label="Website URL"><button class="action">Open</button></form></div>
+<div class="toolcard"><h3>Quick notes</h3><p>Notes stay in this browser on this device. Don't save private or sensitive information here.</p><textarea class="notes" id="notes" placeholder="Type a quick note…"></textarea></div>
+</div>
+<div class="sectionlabel">Heads up</div>
+<div class="toolcard"><h3>Some websites cannot be embedded</h3><p>Sites can block frames using browser security headers. This page cannot override those rules or bypass school network restrictions. Use “Open in new tab” when a site refuses to load.</p><button class="action" id="openExternal">Open current site in new tab</button></div>
+</div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<footer class="footer"><a href="#" id="terms">Terms of Service</a><span>·</span><a href="#" id="privacy">Privacy Policy</a></footer>
+</div>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const dashboard = $('dashboardView'), home = $('homeView'), frame = $('browserFrame'), iframe = $('browser');
+ let currentUrl = '';
+ let toastTimer;
+ function toast(message) {
+   const el = $('toast'); el.textContent = message; el.classList.add('show');
+   clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3400);
+ }
+ function normalize(value) {
+   let v = value.trim();
+   if (!v) return '';
+   if (/^https?:\/\//i.test(v)) return v;
+   if (/^[\w-]+(\.[\w-]+)+([/:?#].*)?$/i.test(v) && !v.includes(' ')) return 'https://' + v;
+   return 'https://www.google.com/search?q=' + encodeURIComponent(v);
+ }
+ function openUrl(value) {
+   const url = normalize(value);
+   if (!url) return;
+   if (!/^https?:\/\//i.test(url)) { toast('Please enter a valid web address.'); return; }
+   currentUrl = url;
+   $('addressInput').value = url;
+   $('searchInput').value = '';
+   $('dashUrl').value = url;
+   frame.classList.add('visible');
+   home.classList.add('hidden');
+   dashboard.classList.remove('visible');
+   document.querySelectorAll('.sidebtn').forEach(b => b.classList.toggle('active', b.dataset.view === 'home'));
+   try { iframe.src = url; } catch (_) {}
+   toast('If this site refuses to display, open it in a new tab from the dashboard.');
+ }
+ function showHome() {
+   dashboard.classList.remove('visible');
+   frame.classList.remove('visible');
+   home.classList.remove('hidden');
+   document.querySelectorAll('.sidebtn').forEach(b => b.classList.toggle('active', b.dataset.view === 'home'));
+ }
+ function showDashboard() {
+   dashboard.classList.add('visible');
+   home.classList.add('hidden');
+   document.querySelectorAll('.sidebtn').forEach(b => b.classList.toggle('active', b.dataset.view !== 'home'));
+   updateClock();
+ }
+ function toggleDashboard() {
+   if (dashboard.classList.contains('visible')) {
+     dashboard.classList.remove('visible');
+     if (!currentUrl) home.classList.remove('hidden');
+   } else showDashboard();
+ }
+ $('searchForm').addEventListener('submit', e => { e.preventDefault(); openUrl($('searchInput').value); });
+ $('addressForm').addEventListener('submit', e => { e.preventDefault(); openUrl($('addressInput').value); });
+ $('dashUrlForm').addEventListener('submit', e => { e.preventDefault(); openUrl($('dashUrl').value); });
+ document.querySelectorAll('[data-url]').forEach(b => b.addEventListener('click', () => openUrl(b.dataset.url)));
+ document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => b.dataset.view === 'home' ? showHome() : showDashboard()));
+ $('closeDashboard').addEventListener('click', () => { dashboard.classList.remove('visible'); if (!currentUrl) home.classList.remove('hidden'); });
+ $('openExternal').addEventListener('click', () => { if (currentUrl) window.open(currentUrl, '_blank', 'noopener,noreferrer'); else toast('Open a website first.'); });
+ $('newTab').addEventListener('click', () => { showHome(); $('searchInput').focus(); });
+ $('back').addEventListener('click', () => { try { iframe.contentWindow.history.back(); } catch (_) { toast('Use the embedded site’s own navigation, or open it in a new tab.'); } });
+ $('forward').addEventListener('click', () => { try { iframe.contentWindow.history.forward(); } catch (_) {} });
+ $('reload').addEventListener('click', () => { if (currentUrl) iframe.src = currentUrl; else location.reload(); });
+ document.addEventListener('keydown', e => {
+   if (e.ctrlKey && e.key.toLowerCase() === 'e') {
+     e.preventDefault(); e.stopPropagation(); toggleDashboard();
+   }
+   if (e.key === 'Escape' && dashboard.classList.contains('visible')) {
+     dashboard.classList.remove('visible'); if (!currentUrl) home.classList.remove('hidden');
+   }
+ });
+ function updateClock() { $('clock').textContent = new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date()); }
+ updateClock(); setInterval(updateClock, 1000);
+ const note = $('notes');
+ try { note.value = localStorage.getItem('abstract-notes') || ''; note.addEventListener('input', () => localStorage.setItem('abstract-notes', note.value)); } catch (_) {}
+ $('terms').addEventListener('click', e => { e.preventDefault(); toast('Demo project: add your own terms before publishing publicly.'); });
+ $('privacy').addEventListener('click', e => { e.preventDefault(); toast('Notes are stored locally in this browser. Avoid entering sensitive information.'); });
+})();
+</script>
+</body>
+</html>
